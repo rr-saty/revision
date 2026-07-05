@@ -44,7 +44,7 @@ function renderImages(containerId, fileIds) {
     var img = document.createElement("img");
     img.src = imgSrc(id);
     img.loading = "lazy";
-    img.onclick = function() { window.open("https://drive.google.com/file/d/" + id + "/view", "_blank"); };
+    img.onclick = function() { openModal(imgSrc(id)); };
     el.appendChild(img);
   });
 }
@@ -62,6 +62,19 @@ function load() {
   api("getFullstack").then(function(d) {
     if (d && d.files) renderImages("fullstack-images", d.files);
   });
+}
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Escape") closeModal();
+});
+
+function openModal(src) {
+  document.getElementById("lightbox-img").src = src;
+  document.getElementById("lightbox").classList.add("show");
+}
+
+function closeModal() {
+  document.getElementById("lightbox").classList.remove("show");
 }
 
 document.querySelectorAll(".update-form").forEach(function(form) {
