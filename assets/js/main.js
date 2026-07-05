@@ -30,7 +30,7 @@ function toast(msg, err) {
 }
 
 function imgSrc(id) {
-  return "https://drive.google.com/uc?export=view&id=" + id;
+  return "https://drive.google.com/thumbnail?id=" + id + "&sz=s0";
 }
 
 function renderImages(containerId, fileIds) {
@@ -44,7 +44,7 @@ function renderImages(containerId, fileIds) {
     var img = document.createElement("img");
     img.src = imgSrc(id);
     img.loading = "lazy";
-    img.onclick = function() { window.open(img.src, "_blank"); };
+    img.onclick = function() { window.open("https://drive.google.com/file/d/" + id + "/view", "_blank"); };
     el.appendChild(img);
   });
 }
