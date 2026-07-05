@@ -1,4 +1,4 @@
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPASTE_YOUR_DEPLOYMENT_ID/exec";
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3R9zMspRpyfTb_dbZJfYBCOlzCYjoE3bjKAqtUEYogHv-OX71cJNrINlYbu-LY0fSLg/exec";
 
 function api(action, payload) {
   var body = payload || {};
