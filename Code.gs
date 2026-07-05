@@ -92,7 +92,7 @@ function installTriggers() {
   ScriptApp.newTrigger("dailyFullstack")
     .timeBased()
     .everyDays(1)
-    .atHour(19)
-    .nearMinute(35)
+    .atHour(1)
+    .nearMinute(20)
     .create();
 }
