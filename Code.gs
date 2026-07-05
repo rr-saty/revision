@@ -6,30 +6,38 @@ var SCRIPT_PROP = PropertiesService.getScriptProperties();
 function doGet(e) {
   var p = e.parameter || {};
   var action = p.action;
+  var cb = p.callback || "";
 
-  if (action === "getCount") return json_(SCRIPT_PROP.getProperty("count") || '{"devopsCount":1,"fullstackCount":1}');
-  if (action === "getDevops") return json_(SCRIPT_PROP.getProperty("devops_today") || '{"files":[]}');
-  if (action === "getFullstack") return json_(SCRIPT_PROP.getProperty("fullstack_today") || '{"files":[]}');
-
-  if (action === "updateCount") {
-    if (p.password !== PASSWORD) return json_({"error":"Incorrect password"});
-    var c = JSON.parse(SCRIPT_PROP.getProperty("count") || '{"devopsCount":1,"fullstackCount":1}');
-    if (p.section === "devops") c.devopsCount = Number(p.count);
-    if (p.section === "fullstack") c.fullstackCount = Number(p.count);
-    c.updatedAt = new Date().toISOString().slice(0,10);
-    SCRIPT_PROP.setProperty("count", JSON.stringify(c));
-    return json_({"ok":true});
+  var data = {};
+  if (action === "getCount") data = JSON.parse(SCRIPT_PROP.getProperty("count") || '{"devopsCount":1,"fullstackCount":1}');
+  else if (action === "getDevops") data = JSON.parse(SCRIPT_PROP.getProperty("devops_today") || '{"files":[]}');
+  else if (action === "getFullstack") data = JSON.parse(SCRIPT_PROP.getProperty("fullstack_today") || '{"files":[]}');
+  else if (action === "updateCount") {
+    if (p.password !== PASSWORD) data = {"error":"Incorrect password"};
+    else {
+      var c = JSON.parse(SCRIPT_PROP.getProperty("count") || '{"devopsCount":1,"fullstackCount":1}');
+      if (p.section === "devops") c.devopsCount = Number(p.count);
+      if (p.section === "fullstack") c.fullstackCount = Number(p.count);
+      c.updatedAt = new Date().toISOString().slice(0,10);
+      SCRIPT_PROP.setProperty("count", JSON.stringify(c));
+      data = {"ok":true};
+    }
   }
+  else data = {"error":"Unknown action"};
 
-  return json_({"error":"Unknown action"});
+  return json_(data, cb);
 }
 
 function doPost(e) {
   return doGet(e);
 }
 
-function json_(obj) {
-  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+function json_(data, callback) {
+  var json = JSON.stringify(data);
+  var output = ContentService.createTextOutput();
+  if (callback) output.setContent(callback + "(" + json + ");");
+  else output.setContent(json);
+  return output.setMimeType(ContentService.MimeType.JAVASCRIPT);
 }
 
 function dailyDevops() {
