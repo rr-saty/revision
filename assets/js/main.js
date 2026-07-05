@@ -1,13 +1,12 @@
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycby3R9zMspRpyfTb_dbZJfYBCOlzCYjoE3bjKAqtUEYogHv-OX71cJNrINlYbu-LY0fSLg/exec";
 
 function api(action, payload) {
-  var body = payload || {};
-  body.action = action;
-  return fetch(SCRIPT_URL, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {"Content-Type": "text/plain;charset=utf-8"}
-  }).then(function(r) { return r.json(); });
+  var params = new URLSearchParams();
+  params.set("action", action);
+  if (payload) {
+    Object.keys(payload).forEach(function(k) { params.set(k, payload[k]); });
+  }
+  return fetch(SCRIPT_URL + "?" + params.toString()).then(function(r) { return r.json(); });
 }
 
 function toast(msg, err) {

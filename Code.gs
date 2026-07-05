@@ -3,31 +3,29 @@ var DEV_FOLDER_ID = "1DRRSy42KqYIinMnjEykSTeb4nuuBHEHn";
 var FS_FOLDER_ID = "1OcmxuQ_dBiaolLx_99umOEO5YO46Lh_c";
 var SCRIPT_PROP = PropertiesService.getScriptProperties();
 
-function doPost(e) {
-  var data = {};
-  if (e.postData && e.postData.contents) {
-    try { data = JSON.parse(e.postData.contents); } catch(ex) {}
-  }
-  if (e.parameter) {
-    for (var k in e.parameter) data[k] = e.parameter[k];
-  }
+function doGet(e) {
+  var p = e.parameter || {};
+  var action = p.action;
 
-  var action = data.action;
   if (action === "getCount") return json_(SCRIPT_PROP.getProperty("count") || '{"devopsCount":1,"fullstackCount":1}');
   if (action === "getDevops") return json_(SCRIPT_PROP.getProperty("devops_today") || '{"files":[]}');
   if (action === "getFullstack") return json_(SCRIPT_PROP.getProperty("fullstack_today") || '{"files":[]}');
 
   if (action === "updateCount") {
-    if (data.password !== PASSWORD) return json_({"error":"Incorrect password"});
+    if (p.password !== PASSWORD) return json_({"error":"Incorrect password"});
     var c = JSON.parse(SCRIPT_PROP.getProperty("count") || '{"devopsCount":1,"fullstackCount":1}');
-    if (data.section === "devops") c.devopsCount = Number(data.count);
-    if (data.section === "fullstack") c.fullstackCount = Number(data.count);
+    if (p.section === "devops") c.devopsCount = Number(p.count);
+    if (p.section === "fullstack") c.fullstackCount = Number(p.count);
     c.updatedAt = new Date().toISOString().slice(0,10);
     SCRIPT_PROP.setProperty("count", JSON.stringify(c));
     return json_({"ok":true});
   }
 
   return json_({"error":"Unknown action"});
+}
+
+function doPost(e) {
+  return doGet(e);
 }
 
 function json_(obj) {
