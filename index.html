@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revision</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Revision</h1>
+    <p class="subtitle">Daily revision tracker</p>
+  </header>
+
+  <main>
+    <section class="card" id="sec-devops">
+      <div class="card-header">
+        <h2>DevOps</h2>
+        <span class="badge" id="devops-count">—</span>
+      </div>
+      <div class="images" id="devops-images"><p class="empty">No images for today</p></div>
+      <form class="update-form" data-section="devops">
+        <label>Pages per day</label>
+        <div class="form-row">
+          <input type="number" min="1" max="50" placeholder="e.g. 3" required>
+          <button type="submit">Set</button>
+        </div>
+        <input type="password" class="pw" placeholder="Password" required>
+      </form>
+    </section>
+
+    <section class="card placeholder-card">
+      <h2>Data Science + Python + DSA</h2>
+      <p class="coming-soon">Coming soon</p>
+    </section>
+
+    <section class="card placeholder-card">
+      <h2>Automations</h2>
+      <p class="coming-soon">Coming soon</p>
+    </section>
+
+    <section class="card" id="sec-fullstack">
+      <div class="card-header">
+        <h2>Full Stack Web Development</h2>
+        <span class="badge" id="fullstack-count">—</span>
+      </div>
+      <div class="images" id="fullstack-images"><p class="empty">No images for today</p></div>
+      <form class="update-form" data-section="fullstack">
+        <label>Pages per day</label>
+        <div class="form-row">
+          <input type="number" min="1" max="50" placeholder="e.g. 2" required>
+          <button type="submit">Set</button>
+        </div>
+        <input type="password" class="pw" placeholder="Password" required>
+      </form>
+    </section>
+  </main>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
